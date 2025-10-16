@@ -1,0 +1,149 @@
+test1_open_google.js
+const {Builder} = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
+
+(async function openGoogle() {
+  let options = new chrome.Options();
+  options.excludeSwitches(['enable-logging']);
+
+  let driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
+  try {
+    await driver.get('https://www.google.com');
+    let title = await driver.getTitle();
+    console.log('Заголовок страницы:', title);
+    await new Promise(r => setTimeout(r, 5000));
+  } finally {
+    await driver.quit();
+  }
+})();
+
+📄 test2_amazon_search.js
+const {Builder, By, Key} = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
+
+(async function amazonSearch() {
+  let driver = await new Builder().forBrowser('chrome').setChromeOptions(new chrome.Options().excludeSwitches(['enable-logging'])).build();
+  try {
+    await driver.get('https://www.amazon.com');
+    let searchBox = await driver.findElement(By.id('twotabsearchtextbox'));
+    await searchBox.sendKeys('laptop', Key.RETURN);
+    console.log('Выполнен поиск по слову "laptop"');
+    await new Promise(r => setTimeout(r, 5000));
+  } finally {
+    await driver.quit();
+  }
+})();
+
+📄 test3_locators_demo.js
+const {Builder, By} = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
+
+(async function locatorsDemo() {
+  let driver = await new Builder().forBrowser('chrome').setChromeOptions(new chrome.Options().excludeSwitches(['enable-logging'])).build();
+  try {
+    await driver.get('https://www.w3schools.com/html/html_forms.asp');
+    console.log('Страница с формой открыта.');
+
+    let firstName = await driver.findElement(By.id('fname'));
+    await firstName.clear();
+    await firstName.sendKeys('John');
+
+    let lastName = await driver.findElement(By.name('lname'));
+    await lastName.clear();
+    await lastName.sendKeys('Doe');
+
+    console.log('Данные введены в форму.');
+    await new Promise(r => setTimeout(r, 5000));
+  } finally {
+    await driver.quit();
+  }
+})();
+
+📄 test4_click_button.js
+const {Builder, By} = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
+
+(async function clickButtonDemo() {
+  let driver = await new Builder().forBrowser('chrome').setChromeOptions(new chrome.Options().excludeSwitches(['enable-logging'])).build();
+  try {
+    await driver.get('https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_alert');
+    await driver.switchTo().frame('iframeResult');
+    let button = await driver.findElement(By.tagName('button'));
+    await button.click();
+    console.log('Кнопка нажата!');
+    await new Promise(r => setTimeout(r, 5000));
+  } finally {
+    await driver.quit();
+  }
+})();
+
+📄 test5_explicit_wait.js
+const {Builder, By, until} = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
+
+(async function explicitWaitDemo() {
+  let options = new chrome.Options();
+  options.excludeSwitches(['enable-logging']);
+
+  let driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
+  try {
+    await driver.get('https://www.w3schools.com/howto/howto_css_login_form.asp');
+    console.log('Открыт пример формы логина');
+
+    let loginBtn = await driver.wait(until.elementLocated(By.css('button')), 10000);
+    console.log('✅ Кнопка найдена!');
+    await new Promise(r => setTimeout(r, 5000));
+  } finally {
+    await driver.quit();
+  }
+})();
+
+📄 test6_navigation.js
+const {Builder} = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
+
+(async function navigationDemo() {
+  let driver = await new Builder().forBrowser('chrome').setChromeOptions(new chrome.Options().excludeSwitches(['enable-logging'])).build();
+  try {
+    await driver.get('https://example.com');
+    console.log('Открыта Example.com');
+
+    await driver.navigate().to('https://www.wikipedia.org');
+    console.log('Перешли на Википедию');
+
+    let currentUrl = await driver.getCurrentUrl();
+    console.log('Текущий URL:', currentUrl);
+
+    await new Promise(r => setTimeout(r, 5000));
+  } finally {
+    await driver.quit();
+  }
+})();
+
+📄 test7_multiple_locators.js
+const {Builder, By} = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
+
+(async function multipleLocatorsDemo() {
+  let driver = await new Builder().forBrowser('chrome').setChromeOptions(new chrome.Options().excludeSwitches(['enable-logging'])).build();
+  try {
+    await driver.get('https://www.w3schools.com/html/html_forms.asp');
+    console.log('Открыта страница с формой');
+
+    let inputById = await driver.findElement(By.id('fname'));
+    await inputById.sendKeys('Alice');
+
+    let inputByName = await driver.findElement(By.name('lname'));
+    await inputByName.sendKeys('Wonderland');
+
+    let cssElement = await driver.findElement(By.css('input#fname'));
+    console.log('Элемент по CSS найден:', await cssElement.getAttribute('name'));
+
+    let xpathElement = await driver.findElement(By.xpath('//input[@id="lname"]'));
+    console.log('Элемент по XPath найден:', await xpathElement.getAttribute('id'));
+
+    await new Promise(r => setTimeout(r, 5000));
+  } finally {
+    await driver.quit();
+  }
+})();
